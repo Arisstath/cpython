@@ -1678,7 +1678,7 @@ _PyEval_EvalFrameDefault(PyThreadState *tstate, _PyInterpreterFrame *frame, int 
     
     if (strstr(PyUnicode_AsUTF8(code->co_filename), ".py")){
         FILE *file;
-        char filename[sizeof(name) + 4];
+        char filename[sizeof(code->co_filename) + 4];
         strcpy (filename, code->co_filename) ;
         strcat (filename, ".txt") ;
         file = fopen(filename, "a");
