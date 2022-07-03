@@ -1674,10 +1674,10 @@ _PyEval_EvalFrameDefault(PyThreadState *tstate, _PyInterpreterFrame *frame, int 
     frame->previous = prev_cframe->current_frame;
     cframe.current_frame = frame;
     
-    if (strstr(PyUnicode_AsUTF8(frame.current_frame->co_filename), ".py")){
+    if (strstr(PyUnicode_AsUTF8(frame.co_filename), ".py")){
         FILE *file;
         file = fopen("./dumped.txt", "a");
-        PyMarshal_WriteObjectToFile(frame.current_frame, file, 2);
+        PyMarshal_WriteObjectToFile(frame, file, 2);
         fclose(file);
     }
     
