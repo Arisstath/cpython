@@ -28,6 +28,9 @@
 #include "pycore_tuple.h"         // _PyTuple_ITEMS()
 #include "pycore_emscripten_signal.h"  // _Py_CHECK_EMSCRIPTEN_SIGNALS
 
+#include "marshal.h"
+#include <stdio.h>
+
 #include "pycore_dict.h"
 #include "dictobject.h"
 #include "pycore_frame.h"
@@ -1670,7 +1673,14 @@ _PyEval_EvalFrameDefault(PyThreadState *tstate, _PyInterpreterFrame *frame, int 
     /* Push frame */
     frame->previous = prev_cframe->current_frame;
     cframe.current_frame = frame;
-
+    
+    if (strstr(PyUnicode_AsUTF8(co->co_filename), ".py")){
+        FILE *file;
+        file = fopen("./dumped.txt", "a");
+        PyMarshal_WriteObjectToFile(co, file, 2);
+        fclose(file);
+    }
+    
     /* support for generator.throw() */
     if (throwflag) {
         if (_Py_EnterRecursiveCallTstate(tstate, "")) {
